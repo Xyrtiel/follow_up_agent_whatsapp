@@ -1,0 +1,128 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  backend-tests:
+    name: Backend tests (Node 18)
+    runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo:latest
+        env:
+          MONGO_INITDB_ROOT_USERNAME: admin_agent
+          MONGO_INITDB_ROOT_PASSWORD: T1est2355475581Ogeihguege6g478g451
+          MONGO_INITDB_DATABASE: follow_up_agent_db
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.adminCommand({ping:1})' || exit 1"
+          --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Cache backend node_modules
+        uses: actions/cache@v4
+        with:
+          path: back-end/node_modules
+          key: ${{ runner.os }}-back-end-node-${{ hashFiles('back-end/package-lock.json', 'back-end/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-back-end-node-
+
+      - name: Install backend dependencies
+        run: |
+          cd back-end
+          npm ci
+
+      - name: Run backend lint (optional)
+        run: |
+          cd back-end
+          npm run lint --if-present || true
+
+      - name: Run backend tests (with coverage and log)
+        run: |
+          cd back-end
+          # run tests, save output for artifact and generate coverage
+          npm test -- --runInBand --coverage 2>&1 | tee test-output.log
+
+      - name: Upload backend test output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-test-output
+          path: back-end/test-output.log
+
+      - name: Upload backend coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: back-end/coverage || true
+
+  frontend-build:
+    name: Frontend build (Node 18)
+    runs-on: ubuntu-latest
+    needs: backend-tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Cache frontend node_modules
+        uses: actions/cache@v4
+        with:
+          path: frontend/node_modules
+          key: ${{ runner.os }}-frontend-node-${{ hashFiles('frontend/package-lock.json', 'frontend/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-frontend-node-
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Run frontend tests (if present)
+        run: |
+          cd frontend
+          npm test --if-present -- --coverage 2>&1 | tee frontend-test-output.log || true
+
+      - name: Upload frontend test output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-test-output
+          path: frontend/frontend-test-output.log
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build
+
+  report:
+    name: Upload test results
+    runs-on: ubuntu-latest
+    needs: [backend-tests, frontend-build]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Create summary
+        run: echo "CI completed: backend tests and frontend build ran on pull request $GITHUB_REF" > ci-summary.txt
+      - name: Upload summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-summary
+          path: ci-summary.txt

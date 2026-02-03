@@ -32,7 +32,7 @@ export class ContactController {
         @Body('etat_contact') etat_contact: etat_contact
     ) {
         return this.contactService.updateContactStatus(id, etat_contact);
-    }
+    }  
 
     @Delete(':id')
     async remove(@Param('id') id: string) {

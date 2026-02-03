@@ -11,7 +11,6 @@ export class Message extends Document {
 
     @Prop({ required: true, default: Date.now })
     delai_attente: Date;
-
 }
 
 export const MessageSchema = SchemaFactory.createForClass(Message);
