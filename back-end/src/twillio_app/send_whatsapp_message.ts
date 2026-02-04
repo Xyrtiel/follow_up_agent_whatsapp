@@ -1,6 +1,5 @@
 import path from 'path';
 import dotenv from 'dotenv';
-// Charge le .env qui est à la racine du dépôt, si présent
 dotenv.config({ path: path.resolve(process.cwd(), '../.env') });
 
 import twilio from 'twilio';
