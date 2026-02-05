@@ -16,11 +16,15 @@ export class ContactService {
         return this.contactModel.findOne({ numero_telephone }).exec();
     }
 
-    async updateContactStatus(id: string, status: etat_contact): Promise<Contact> {
+    async findAll(): Promise<Contact[]> {
+        return this.contactModel.find().exec();
+    }
+
+    async updateContactStatus(id: string, status: etat_contact): Promise<Contact | null> {
         return this.contactModel.findByIdAndUpdate(id, { etat_contact: status }, { new: true }).exec();
     }
 
-    async removeContact(id: string): Promise<Contact> {
+    async removeContact(id: string): Promise<Contact | null> {
         return this.contactModel.findByIdAndRemove(id).exec();
     }
 }

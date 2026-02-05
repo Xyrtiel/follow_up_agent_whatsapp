@@ -15,10 +15,8 @@ export class CreateContactDto {
             'FOLLOWED_UP',
             'FOLLOWED_UP_REMINDER',
             'ACCEPTED',
-            'REJECTED',
             'NOT_CONTACTED',
-            'INVALID_CONTACT',
-            'UNSUBSCRIBED'
+            'INVALID_CONTACT'
         ],
         { message: 'Le statut fourni n\'est pas valide.' }
     )

@@ -21,6 +21,11 @@ export class ContactController {
         return this.contactService.createContact(createContactDto.name, createContactDto.numero_telephone);
     }
 
+    @Get()
+    async findAll() {
+        return this.contactService.findAll();
+    }
+    
     @Get(':numero_telephone')
     async findOne(@Param('numero_telephone') numero_telephone: string) {
         return this.contactService.findContactByPhone(numero_telephone);

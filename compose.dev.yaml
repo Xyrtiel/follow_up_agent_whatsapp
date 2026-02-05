@@ -25,7 +25,13 @@ services:
     ports:
       - "${BACKEND_PORT}:3000"
     environment:
-      - MONGO_URI=${DATABASE_URL}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - MONGO_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongodb:27017/${MONGO_INITDB_DATABASE}
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - TWILIO_WHATSAPP_NUMBER=${TWILIO_WHATSAPP_NUMBER}
+      - TARGET_PHONE_NUMBER=${TARGET_PHONE_NUMBER}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
     volumes:
       - ./back-end:/usr/src/app
       - /usr/src/app/node_modules
@@ -45,6 +51,20 @@ services:
       - ./frontend:/usr/src/app
       - /usr/src/app/node_modules
     stdin_open: true
+    networks:
+      - app-network
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    restart: unless-stopped
+    # Redirige le trafic vers le service 'backend' sur le port 3000
+    command: http backend:3000
+    ports:
+      - "4040:4040" # Interface web pour voir l'URL publique et les requêtes
+    environment:
+      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN}
+    depends_on:
+      - backend
     networks:
       - app-network
 

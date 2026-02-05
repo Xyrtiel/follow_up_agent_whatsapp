@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/Xyrtiel/follow_up_agent_whatsapp/issues"
   },
-  "homepage": "https://github.com/Xyrtiel/follow_up_agent_whatsapp#readme"
+  "homepage": "https://github.com/Xyrtiel/follow_up_agent_whatsapp#readme",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1"
+  }
 }
