@@ -28,9 +28,9 @@ async function run() {
     const result = await whatsappService.sendFollowUpWithAgent(phone, contactName);
     console.log('[send_live_followup] sendFollowUpWithAgent returned:', result);
 
-    console.log('[send_live_followup] The process will stay alive for 21 minutes to allow the 20-minute follow-up to run.');
-    // keep alive for 21 minutes so the in-memory timer in WhatsAppService can fire
-    await new Promise((resolve) => setTimeout(resolve, 21 * 60 * 1000));
+    console.log('[send_live_followup] The process will stay alive indefinitely to allow the follow-up workflow to complete and the server to remain active.');
+    // Keep the process alive indefinitely
+    await new Promise(() => {});
 
     console.log('[send_live_followup] Done waiting. Closing app context.');
   } catch (err) {

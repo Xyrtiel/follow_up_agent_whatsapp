@@ -8,6 +8,8 @@ import { MessageSchema } from './message/message.schema';
 import { WhatsAppService } from './twillio_app/send_whatsapp_message';
 import { WhatsAppAgentService } from './twillio_app/whatsapp-agent.service';
 import { WhatsAppReceiverController } from './twillio_app/receive_whatsapp_message';
+import { ContactModule } from './contact/contact.module';
+import { MessageModule } from './message/message.module';
 
 @Module({
   imports: [
@@ -38,6 +40,8 @@ import { WhatsAppReceiverController } from './twillio_app/receive_whatsapp_messa
       { name: 'Contact', schema: ContactSchema },
       { name: 'Message', schema: MessageSchema },
     ]),
+    ContactModule,
+    MessageModule,
   ],
   controllers: [AppController, WhatsAppReceiverController],
   providers: [AppService, WhatsAppService, WhatsAppAgentService],

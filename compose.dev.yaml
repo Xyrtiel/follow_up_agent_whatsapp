@@ -31,7 +31,6 @@ services:
       - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
       - TWILIO_WHATSAPP_NUMBER=${TWILIO_WHATSAPP_NUMBER}
       - TARGET_PHONE_NUMBER=${TARGET_PHONE_NUMBER}
-      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
     volumes:
       - ./back-end:/usr/src/app
       - /usr/src/app/node_modules
