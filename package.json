@@ -1,0 +1,24 @@
+{
+  "name": "follow_up_agent_whatsapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Xyrtiel/follow_up_agent_whatsapp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Xyrtiel/follow_up_agent_whatsapp/issues"
+  },
+  "homepage": "https://github.com/Xyrtiel/follow_up_agent_whatsapp#readme",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1"
+  }
+}
